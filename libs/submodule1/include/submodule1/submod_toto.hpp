@@ -2,6 +2,7 @@
 #define __submod_toto_hpp__
 
 #include <iostream>
+#include <string>
 
 void submod_toto();
 
