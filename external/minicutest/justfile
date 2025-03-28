@@ -1,0 +1,39 @@
+alias c := clean
+alias b := build
+alias cb := rebuild
+alias i := install
+alias g := gen_compile_commands
+alias r := run
+alias d := doc
+
+
+clean:
+    rm -rf build/
+    
+build *CMAKE_VARS:
+    mkdir -p build && cd build && \
+    cmake -DCMAKE_INSTALL_PREFIX=~/root-filetree/devel/install {{CMAKE_VARS}} .. && \
+    cmake --build .
+
+rebuild: clean build
+
+install:
+    cd build && make install
+
+gen_compile_commands:
+    #!/usr/bin/env bash
+    set -euxo pipefail
+    if [ ! -f "build/compile_commands.json" ]; then
+        echo "compile_commands.json not found in build/. Generating"
+        mkdir -p build && cd build && \
+        cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 ..
+    else
+        echo "compile_commands.json already existing. Run regen_compile_commands if want to clean and regenerate"
+    fi
+    cp -f compile_commands.json ..
+
+doc:
+    cd build && make doc
+
+run number='':
+    ./build/src/flo{{number}}

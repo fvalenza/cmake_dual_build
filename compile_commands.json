@@ -1,0 +1,52 @@
+[
+{
+  "directory": "/home/fvalenza/root-filetree/devel/src/cpp/product_conf/build/libs/submodule1",
+  "command": "/usr/bin/c++  -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule1/include -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/build/include -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule1/src -Wall -Wextra -Wshadow -Wformat=2 -Wunused -o CMakeFiles/submodule1.dir/src/submodule1.cpp.o -c /home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule1/src/submodule1.cpp",
+  "file": "/home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule1/src/submodule1.cpp"
+},
+{
+  "directory": "/home/fvalenza/root-filetree/devel/src/cpp/product_conf/build/libs/submodule1",
+  "command": "/usr/bin/c++  -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule1/include -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/build/include -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule1/src -Wall -Wextra -Wshadow -Wformat=2 -Wunused -o CMakeFiles/submodule1.dir/src/submod_toto.cpp.o -c /home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule1/src/submod_toto.cpp",
+  "file": "/home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule1/src/submod_toto.cpp"
+},
+{
+  "directory": "/home/fvalenza/root-filetree/devel/src/cpp/product_conf/build/libs/submodule1",
+  "command": "/usr/bin/c++  -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule1/include -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/build/include -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule1/src -Wall -Wextra -Wshadow -Wformat=2 -Wunused -o CMakeFiles/submodule1.dir/src/submod2_toto.cpp.o -c /home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule1/src/submod2_toto.cpp",
+  "file": "/home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule1/src/submod2_toto.cpp"
+},
+{
+  "directory": "/home/fvalenza/root-filetree/devel/src/cpp/product_conf/build/libs/submodule2",
+  "command": "/usr/bin/c++  -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule2/include -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule2/src -Wall -Wextra -Wshadow -Wformat=2 -Wunused -o CMakeFiles/submodule2.dir/src/submodule2.cpp.o -c /home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule2/src/submodule2.cpp",
+  "file": "/home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule2/src/submodule2.cpp"
+},
+{
+  "directory": "/home/fvalenza/root-filetree/devel/src/cpp/product_conf/build/libs/submodule2/examples",
+  "command": "/usr/bin/c++  -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule2/include  -o CMakeFiles/example1-submodule2.dir/example1.cpp.o -c /home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule2/examples/example1.cpp",
+  "file": "/home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule2/examples/example1.cpp"
+},
+{
+  "directory": "/home/fvalenza/root-filetree/devel/src/cpp/product_conf/build/tests",
+  "command": "/usr/bin/c++  -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/tests -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/src/module1 -isystem /home/fvalenza/root-filetree/devel/install/include  -g --coverage -fprofile-abs-path -o CMakeFiles/product_conf_tests.dir/suite.test.cpp.o -c /home/fvalenza/root-filetree/devel/src/cpp/product_conf/tests/suite.test.cpp",
+  "file": "/home/fvalenza/root-filetree/devel/src/cpp/product_conf/tests/suite.test.cpp"
+},
+{
+  "directory": "/home/fvalenza/root-filetree/devel/src/cpp/product_conf/build/tests",
+  "command": "/usr/bin/c++  -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/tests -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/src/module1 -isystem /home/fvalenza/root-filetree/devel/install/include  -g --coverage -fprofile-abs-path -o CMakeFiles/product_conf_tests.dir/suites/suite1.cpp.o -c /home/fvalenza/root-filetree/devel/src/cpp/product_conf/tests/suites/suite1.cpp",
+  "file": "/home/fvalenza/root-filetree/devel/src/cpp/product_conf/tests/suites/suite1.cpp"
+},
+{
+  "directory": "/home/fvalenza/root-filetree/devel/src/cpp/product_conf/build/src",
+  "command": "/usr/bin/c++  -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/src/src -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/src/module1 -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule1/include -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/build/include -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule2/include -isystem /home/fvalenza/root-filetree/devel/install/include  -g --coverage -fprofile-abs-path -Wall -Wextra -Wshadow -Wformat=2 -Wunused -o CMakeFiles/product_conf.dir/product_conf.main.cpp.o -c /home/fvalenza/root-filetree/devel/src/cpp/product_conf/src/product_conf.main.cpp",
+  "file": "/home/fvalenza/root-filetree/devel/src/cpp/product_conf/src/product_conf.main.cpp"
+},
+{
+  "directory": "/home/fvalenza/root-filetree/devel/src/cpp/product_conf/build/src",
+  "command": "/usr/bin/c++  -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/src/src -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/src/module1 -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule1/include -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/build/include -I/home/fvalenza/root-filetree/devel/src/cpp/product_conf/libs/submodule2/include -isystem /home/fvalenza/root-filetree/devel/install/include  -g --coverage -fprofile-abs-path -Wall -Wextra -Wshadow -Wformat=2 -Wunused -o CMakeFiles/product_conf2.dir/product_conf2.main.cpp.o -c /home/fvalenza/root-filetree/devel/src/cpp/product_conf/src/product_conf2.main.cpp",
+  "file": "/home/fvalenza/root-filetree/devel/src/cpp/product_conf/src/product_conf2.main.cpp"
+},
+{
+  "directory": "/home/fvalenza/root-filetree/devel/src/cpp/product_conf/build/src/module1",
+  "command": "/usr/bin/c++  -isystem /home/fvalenza/root-filetree/devel/install/include  -g --coverage -fprofile-abs-path -o CMakeFiles/libmodule1.dir/module1.cpp.o -c /home/fvalenza/root-filetree/devel/src/cpp/product_conf/src/module1/module1.cpp",
+  "file": "/home/fvalenza/root-filetree/devel/src/cpp/product_conf/src/module1/module1.cpp"
+}
+]

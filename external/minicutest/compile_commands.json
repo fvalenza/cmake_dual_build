@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/home/fvalenza/root-filetree/devel/src/cpp/cpp-playground/portfolio/minicutest/build/examples",
+  "command": "/usr/bin/cc  -I/home/fvalenza/root-filetree/devel/src/cpp/cpp-playground/portfolio/minicutest/examples/include -I/home/fvalenza/root-filetree/devel/src/cpp/cpp-playground/portfolio/minicutest/include  -o CMakeFiles/mcu_example.dir/src/mcu_suite1.c.o -c /home/fvalenza/root-filetree/devel/src/cpp/cpp-playground/portfolio/minicutest/examples/src/mcu_suite1.c",
+  "file": "/home/fvalenza/root-filetree/devel/src/cpp/cpp-playground/portfolio/minicutest/examples/src/mcu_suite1.c"
+},
+{
+  "directory": "/home/fvalenza/root-filetree/devel/src/cpp/cpp-playground/portfolio/minicutest/build/examples",
+  "command": "/usr/bin/cc  -I/home/fvalenza/root-filetree/devel/src/cpp/cpp-playground/portfolio/minicutest/examples/include -I/home/fvalenza/root-filetree/devel/src/cpp/cpp-playground/portfolio/minicutest/include  -o CMakeFiles/mcu_example.dir/src/mcu_main.c.o -c /home/fvalenza/root-filetree/devel/src/cpp/cpp-playground/portfolio/minicutest/examples/src/mcu_main.c",
+  "file": "/home/fvalenza/root-filetree/devel/src/cpp/cpp-playground/portfolio/minicutest/examples/src/mcu_main.c"
+}
+]
