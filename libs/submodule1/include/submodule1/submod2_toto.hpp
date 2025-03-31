@@ -1,8 +1,8 @@
-#ifndef __submod_titi_hpp__
-#define __submod_titi_hpp__
+#ifndef __submod2_toto_hpp__
+#define __submod2_toto_hpp__
 
 #include <iostream>
 
-void submod_titi();
+void submod2_toto();
 
-#endif // !__submod_titi_hpp__
+#endif // !__submod2_toto_hpp__
