@@ -12,6 +12,7 @@ project(
 OPTION (BUILD_DOC "Build documentation" ON)
 OPTION (BUILD_EXTRAS "Build extras/optional programs" OFF)
 OPTION (BUILD_UNIT_TESTS "Build the unitary tests" ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Generate target "doc" in case doxygen is found and BUILD_DOC is ON
 include(cmake/documentation.cmake)

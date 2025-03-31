@@ -9,6 +9,7 @@ project(
 )
 
 OPTION(BUILD_EXAMPLES "Build the examples" ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if(NOT TARGET lib_compiler_flags)
     # Compiler flags through a linked library.
