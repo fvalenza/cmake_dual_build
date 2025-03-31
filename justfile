@@ -36,7 +36,8 @@ gen_compile_commands:
     else
         echo "compile_commands.json already existing. Run regen_compile_commands if want to clean and regenerate"
     fi
-    cp -f compile_commands.json ..
+    ln -sf build/compile_commands.json compile_commands.json
+    # cp -f compile_commands.json ..
 
 doc:
     cd build && make doc
