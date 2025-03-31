@@ -28,12 +28,8 @@ set(SPECIFIC_SOURCES
 set(COMMON_HEADERS
     include/submodule1/submodule1.hpp
 )
-set(SPECIFIC_HEADERS
-    include/submodule1/submod
-    include/submodule1/submod2
-)
 
-set(SPECIFIC_HEADERS_EXT
+set(SPECIFIC_HEADERS
     include/submodule1/submod.hpp
     include/submodule1/submod2.hpp
 )
@@ -52,87 +48,63 @@ foreach(SRC IN LISTS SPECIFIC_SOURCES)
     get_filename_component(SOURCE_DIR ${SRC} DIRECTORY)
     get_filename_component(SOURCE_NAME ${SRC} NAME_WE)
     get_filename_component(SOURCE_EXT ${SRC} LAST_EXT)
-    message(STATUS "SOURCE_DIR: ${SOURCE_DIR}")
-    message(STATUS "SOURCE_NAME: ${SOURCE_NAME}")
-    message(STATUS "SOURCE_EXT: ${SOURCE_EXT}")
     set(SOURCE_CLIENT ${SOURCE_DIR}/${SOURCE_NAME}_${CLIENT}${SOURCE_EXT})
-    message(STATUS "SOURCE_CLIENT: ${SOURCE_CLIENT}")
 
     list(APPEND FINAL_SOURCES ${SOURCE_CLIENT})
 endforeach()
 
-# Display final sources
-message(STATUS "Final sources: ${FINAL_SOURCES}")
+
+
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/include)
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/symlinks)
 
-# foreach(SPECIFIC_FILE IN LISTS SPECIFIC_HEADERS_EXT)
-#     get_filename_component(HEADER_DIR ${SPECIFIC_FILE} DIRECTORY)
-#     get_filename_component(HEADER_NAME ${SPECIFIC_FILE} NAME_WE)
-#     get_filename_component(HEADER_EXT ${SPECIFIC_FILE} LAST_EXT)
-#     message(STATUS "HEADER_DIR: ${HEADER_DIR}")
-#     message(STATUS "HEADER_NAME: ${HEADER_NAME}")
-#     message(STATUS "HEADER_EXT: ${HEADER_EXT}")
-#
-#     set(SPECIFIC_FILE_CLIENT ${HEADER_DIR}/${HEADER_NAME}_${CLIENT}${HEADER_EXT})
-#     message(STATUS "SPECIFIC_FILE_CLIENT: ${SPECIFIC_FILE_CLIENT}")
-#     message(STATUS "SPECIFIC_FILE: ${SPECIFIC_FILE}")
-#
-#
-# endforeach()
+set(COPIED_FILES)
+set(CLIENT_HEADERS)
 
-set(RENAMED_HEADERS)
-set(SPECIFIC_HEADER_NAMES)
-set(UNSPECIFIC_HEADER_NAMES)
-foreach(HEAD IN LISTS SPECIFIC_HEADERS_EXT)
-    set(SOURCE_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/${HEAD}_${CLIENT}.hpp)
-    set(DEST_HEADER ${CMAKE_BINARY_DIR}/${HEAD}.hpp)
+message(STATUS "SPECIFIC_HEADERS: ${SPECIFIC_HEADERS}")
 
-    get_filename_component(HEADER_DIR ${HEAD} DIRECTORY)
-    get_filename_component(HEADER_NAME ${HEAD} NAME_WE)
-    get_filename_component(HEADER_EXT ${HEAD} LAST_EXT)
-    message(STATUS "HEADER_DIR: ${HEADER_DIR}")
-    message(STATUS "HEADER_NAME: ${HEADER_NAME}")
-    message(STATUS "HEADER_EXT: ${HEADER_EXT}")
+foreach (head ${SPECIFIC_HEADERS})
+    message (STATUS "FOREACH")
+    message(STATUS "head: ${head}")
+    set(COPIED_FILE ${CMAKE_BINARY_DIR}/${head})
+    list(APPEND COPIED_FILES ${COPIED_FILE})
 
-    set(HEADER_CLIENT ${HEADER_DIR}/${HEADER_NAME}_${CLIENT}${HEADER_EXT})
-    message(STATUS "HEADER_CLIENT: ${HEADER_CLIENT}")
-    message(STATUS "HEAD: ${HEAD}")
-    set(SOURCE_HEAD ${CMAKE_CURRENT_SOURCE_DIR}/${HEADER_CLIENT})
-    set(SOURCE_HEADER ${SOURCE_HEAD}) # duplicate to remove
-    message(STATUS "SOURCE_HEAD: ${SOURCE_HEAD}")
-    set(DEST_HEADER ${CMAKE_BINARY_DIR}/${HEAD})
-    message(STATUS "DEST_HEADER: ${DEST_HEADER}")
+    get_filename_component(HEADER_DIR ${head} DIRECTORY)
+    get_filename_component(HEADER_NAME ${head} NAME_WE)
+    get_filename_component(HEADER_EXT ${head} LAST_EXT)
+    set(CLIENT_HEAD ${HEADER_DIR}/${HEADER_NAME}_${CLIENT}${HEADER_EXT})
+    list(APPEND CLIENT_HEADERS ${CLIENT_HEAD})
 
-    # Ensure the source header exists before copying
-    if(NOT EXISTS ${SOURCE_HEADER})
-        message(FATAL_ERROR "Required header file '${SOURCE_HEADER}' does not exist!")
-    endif()
+    message(STATUS "Trying to copy ${CLIENT_HEAD} to ${COPIED_FILE}")
 
-    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/include)
+    add_custom_command(
+    OUTPUT ${COPIED_FILE}
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+            ${CMAKE_BINARY_DIR}/${HEADER_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${CMAKE_CURRENT_SOURCE_DIR}/${CLIENT_HEAD}
+            ${COPIED_FILE}
+    DEPENDS ${CLIENT_HEAD}
+    )
 
-    if(CMAKE_HOST_WIN32)
-        message(STATUS "Make accessible specific files from build/ Copying file from ${SOURCE_HEADER} to ${DEST_HEADER}")
-        configure_file(${SOURCE_HEADER} ${DEST_HEADER} COPYONLY)
-    else()
-        get_filename_component(DEST_DIR ${DEST_HEADER} DIRECTORY) # Ensure the directory for DEST_HEADER exists
-        file(MAKE_DIRECTORY ${DEST_DIR})  # Create the necessary directory structure
+    message(STATUS "Creating link from  ${CMAKE_BINARY_DIR}/symlinks/${head} --> ${CMAKE_CURRENT_SOURCE_DIR}/${CLIENT_HEAD}")
+    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/symlinks/${HEADER_DIR})  # Create the necessary directory structure
+    file(CREATE_LINK   ${CMAKE_CURRENT_SOURCE_DIR}/${CLIENT_HEAD} ${CMAKE_BINARY_DIR}/symlinks/${head} SYMBOLIC)
 
-        message(STATUS "Make accessible specific files from build/ Creating symlink from ${DEST_HEADER} to ${SOURCE_HEADER}")
-        file(CREATE_LINK ${SOURCE_HEADER} ${DEST_HEADER}  SYMBOLIC)
-    endif()
 
-    list(APPEND RENAMED_HEADERS ${SOURCE_HEADER})
-    # list(APPEND SPECIFIC_HEADER_NAMES ${HEAD}_${CLIENT}.hpp)
-    # list(APPEND UNSPECIFIC_HEADER_NAMES ${HEAD}.hpp)
 endforeach()
 
-message(STATUS "Renamed headers: ${RENAMED_HEADERS}")
-# message(STATUS "specific header names: ${SPECIFIC_HEADER_NAMES}")
-# message(STATUS "unspecific header names: ${UNSPECIFIC_HEADER_NAMES}")
+# Create a target that depends on all copied files
+add_custom_target(copy_files ALL DEPENDS ${COPIED_FILES})
+
+
+
+
+
 
 # Concatenate common headers with renamed headers
 set(${PROJECT_NAME}_SOURCES ${FINAL_SOURCES})
-set(${PROJECT_NAME}_PUBLIC_HEADERS ${COMMON_HEADERS} ${RENAMED_HEADERS})
+set(${PROJECT_NAME}_PUBLIC_HEADERS ${COMMON_HEADERS} ${COPIED_FILES})
 
 # Create the static library
 add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCES})
@@ -148,6 +120,7 @@ message(STATUS "MY PUBLIC HEADERS: ${MY_PUBLIC_HEADERS}")
 target_include_directories(${PROJECT_NAME}
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/symlinks>
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
         $<INSTALL_INTERFACE:include>
     PRIVATE
@@ -203,10 +176,3 @@ file(WRITE ${HEADERS_LIST_FILE} "")
 #     file(APPEND ${HEADERS_LIST_FILE} "${header}\n")
 # endforeach()
 
-install(CODE "set(SPECIFIC_HEADERS_EXT \"${SPECIFIC_HEADERS_EXT}\")")
-install(CODE "set(CLIENT \"${CLIENT}\")")
-
-# ---- Install Post-Install Script with the headers list ----
-install(FILES ${HEADERS_LIST_FILE} DESTINATION lib/cmake/${PROJECT_NAME})
-
-install(SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/tools/compilation/PostInstall.cmake)
