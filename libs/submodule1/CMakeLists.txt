@@ -33,6 +33,12 @@ set(SPECIFIC_HEADERS
     include/submodule1/submod2
 )
 
+set(SPECIFIC_HEADERS_EXT
+    include/submodule1/submod.hpp
+    include/submodule1/submod2.hpp
+)
+
+
 # Define the client (must be specified when configuring CMake)
 if(NOT DEFINED CLIENT)
     message(FATAL_ERROR "CLIENT variable not set! Use -DCLIENT=toto or -DCLIENT=titi when configuring CMake.")
@@ -42,20 +48,60 @@ endif()
 set(FINAL_SOURCES ${COMMON_SOURCES})
 set(FINAL_HEADERS ${COMMON_HEADERS})
 
-foreach(SPECIFIC_FILE IN LISTS SPECIFIC_SOURCES)
-    list(APPEND FINAL_SOURCES ${SPECIFIC_FILE}_${CLIENT}.cpp)
+foreach(SRC IN LISTS SPECIFIC_SOURCES)
+    get_filename_component(SOURCE_DIR ${SRC} DIRECTORY)
+    get_filename_component(SOURCE_NAME ${SRC} NAME_WE)
+    get_filename_component(SOURCE_EXT ${SRC} LAST_EXT)
+    message(STATUS "SOURCE_DIR: ${SOURCE_DIR}")
+    message(STATUS "SOURCE_NAME: ${SOURCE_NAME}")
+    message(STATUS "SOURCE_EXT: ${SOURCE_EXT}")
+    set(SOURCE_CLIENT ${SOURCE_DIR}/${SOURCE_NAME}_${CLIENT}${SOURCE_EXT})
+    message(STATUS "SOURCE_CLIENT: ${SOURCE_CLIENT}")
+
+    list(APPEND FINAL_SOURCES ${SOURCE_CLIENT})
 endforeach()
 
 # Display final sources
 message(STATUS "Final sources: ${FINAL_SOURCES}")
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/include)
 
+# foreach(SPECIFIC_FILE IN LISTS SPECIFIC_HEADERS_EXT)
+#     get_filename_component(HEADER_DIR ${SPECIFIC_FILE} DIRECTORY)
+#     get_filename_component(HEADER_NAME ${SPECIFIC_FILE} NAME_WE)
+#     get_filename_component(HEADER_EXT ${SPECIFIC_FILE} LAST_EXT)
+#     message(STATUS "HEADER_DIR: ${HEADER_DIR}")
+#     message(STATUS "HEADER_NAME: ${HEADER_NAME}")
+#     message(STATUS "HEADER_EXT: ${HEADER_EXT}")
+#
+#     set(SPECIFIC_FILE_CLIENT ${HEADER_DIR}/${HEADER_NAME}_${CLIENT}${HEADER_EXT})
+#     message(STATUS "SPECIFIC_FILE_CLIENT: ${SPECIFIC_FILE_CLIENT}")
+#     message(STATUS "SPECIFIC_FILE: ${SPECIFIC_FILE}")
+#
+#
+# endforeach()
+
 set(RENAMED_HEADERS)
 set(SPECIFIC_HEADER_NAMES)
 set(UNSPECIFIC_HEADER_NAMES)
-foreach(SPECIFIC_FILE IN LISTS SPECIFIC_HEADERS)
-    set(SOURCE_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/${SPECIFIC_FILE}_${CLIENT}.hpp)
-    set(DEST_HEADER ${CMAKE_BINARY_DIR}/${SPECIFIC_FILE}.hpp)
+foreach(HEAD IN LISTS SPECIFIC_HEADERS_EXT)
+    set(SOURCE_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/${HEAD}_${CLIENT}.hpp)
+    set(DEST_HEADER ${CMAKE_BINARY_DIR}/${HEAD}.hpp)
+
+    get_filename_component(HEADER_DIR ${HEAD} DIRECTORY)
+    get_filename_component(HEADER_NAME ${HEAD} NAME_WE)
+    get_filename_component(HEADER_EXT ${HEAD} LAST_EXT)
+    message(STATUS "HEADER_DIR: ${HEADER_DIR}")
+    message(STATUS "HEADER_NAME: ${HEADER_NAME}")
+    message(STATUS "HEADER_EXT: ${HEADER_EXT}")
+
+    set(HEADER_CLIENT ${HEADER_DIR}/${HEADER_NAME}_${CLIENT}${HEADER_EXT})
+    message(STATUS "HEADER_CLIENT: ${HEADER_CLIENT}")
+    message(STATUS "HEAD: ${HEAD}")
+    set(SOURCE_HEAD ${CMAKE_CURRENT_SOURCE_DIR}/${HEADER_CLIENT})
+    set(SOURCE_HEADER ${SOURCE_HEAD}) # duplicate to remove
+    message(STATUS "SOURCE_HEAD: ${SOURCE_HEAD}")
+    set(DEST_HEADER ${CMAKE_BINARY_DIR}/${HEAD})
+    message(STATUS "DEST_HEADER: ${DEST_HEADER}")
 
     # Ensure the source header exists before copying
     if(NOT EXISTS ${SOURCE_HEADER})
@@ -63,20 +109,21 @@ foreach(SPECIFIC_FILE IN LISTS SPECIFIC_HEADERS)
     endif()
 
     file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/include)
-    # Use configure_file to copy and rename headers at configuration time
-    # configure_file(${SOURCE_HEADER} ${DEST_HEADER} COPYONLY)
 
-    # Ensure the directory for DEST_HEADER exists
-    get_filename_component(DEST_DIR ${DEST_HEADER} DIRECTORY)
-    file(MAKE_DIRECTORY ${DEST_DIR})  # Create the necessary directory structure
+    if(CMAKE_HOST_WIN32)
+        message(STATUS "Make accessible specific files from build/ Copying file from ${SOURCE_HEADER} to ${DEST_HEADER}")
+        configure_file(${SOURCE_HEADER} ${DEST_HEADER} COPYONLY)
+    else()
+        get_filename_component(DEST_DIR ${DEST_HEADER} DIRECTORY) # Ensure the directory for DEST_HEADER exists
+        file(MAKE_DIRECTORY ${DEST_DIR})  # Create the necessary directory structure
 
-    message(STATUS "Creating symlink from ${DEST_HEADER} to ${SOURCE_HEADER}")
-    # file(CREATE_LINK ${DEST_HEADER} ${SYMLINK_PATH} SYMBOLIC)
-    file(CREATE_LINK ${SOURCE_HEADER} ${DEST_HEADER}  SYMBOLIC)
+        message(STATUS "Make accessible specific files from build/ Creating symlink from ${DEST_HEADER} to ${SOURCE_HEADER}")
+        file(CREATE_LINK ${SOURCE_HEADER} ${DEST_HEADER}  SYMBOLIC)
+    endif()
 
     list(APPEND RENAMED_HEADERS ${SOURCE_HEADER})
-    # list(APPEND SPECIFIC_HEADER_NAMES ${SPECIFIC_FILE}_${CLIENT}.hpp)
-    # list(APPEND UNSPECIFIC_HEADER_NAMES ${SPECIFIC_FILE}.hpp)
+    # list(APPEND SPECIFIC_HEADER_NAMES ${HEAD}_${CLIENT}.hpp)
+    # list(APPEND UNSPECIFIC_HEADER_NAMES ${HEAD}.hpp)
 endforeach()
 
 message(STATUS "Renamed headers: ${RENAMED_HEADERS}")
@@ -156,7 +203,7 @@ file(WRITE ${HEADERS_LIST_FILE} "")
 #     file(APPEND ${HEADERS_LIST_FILE} "${header}\n")
 # endforeach()
 
-install(CODE "set(SPECIFIC_HEADERS \"${SPECIFIC_HEADERS}\")")
+install(CODE "set(SPECIFIC_HEADERS_EXT \"${SPECIFIC_HEADERS_EXT}\")")
 install(CODE "set(CLIENT \"${CLIENT}\")")
 
 # ---- Install Post-Install Script with the headers list ----
