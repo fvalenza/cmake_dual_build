@@ -9,13 +9,14 @@ project(
 )
 
 OPTION(BUILD_EXAMPLES "Build the examples" ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if(NOT TARGET lib_compiler_flags)
     # Compiler flags through a linked library.
     include(cmake/base_compile_options.cmake)
 endif()
 
-set(CLIENT "toto")
+OPTION(CLIENT "toto")
 
 set(COMMON_SOURCES
     src/submodule1.cpp
@@ -119,8 +120,8 @@ message(STATUS "MY PUBLIC HEADERS: ${MY_PUBLIC_HEADERS}")
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/symlinks> # This line is important for LSP to find the symlink and "GoToFile/Definition" to open the real source file to modify)
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/symlinks>
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
         $<INSTALL_INTERFACE:include>
     PRIVATE

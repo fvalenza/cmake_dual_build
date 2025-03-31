@@ -1,2 +1,2 @@
 CompileFlags:
-  Add: [-Ibuild/include]
+  Add: [-Ibuild/symlinks/include]
