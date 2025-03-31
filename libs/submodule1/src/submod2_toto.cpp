@@ -1,6 +1,6 @@
 #include "submodule1/submod2.hpp"
 
 
-void submod_titi() {
-    std::cout << "submod_titi" << std::endl;
+void submod2_toto() {
+    std::cout << "submod2_toto" << std::endl;
 }

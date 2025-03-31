@@ -16,7 +16,7 @@ int main (int argc, char *argv[])
     std::cout << "calc esubmodule1:" << calc.add(1,1) << std::endl;
 
     submod_toto();
-    submod_titi();
+    submod2_toto();
 
     return 0;
 }
